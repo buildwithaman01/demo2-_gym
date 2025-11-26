@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inspiring Fitness | Hyderabad's Premium Gym</title>
+    
+    <!-- Fonts: Urbanist & Bebas Neue -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!--/ FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Tailwind Config for Custom Colors -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Urbanist', 'sans-serif'],
+                        display: ['Bebas Neue', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            orange: '#EA580C',
+                            red: '#DC2626',
+                            dark: '#0f172a',
+                            darker: '#020617',
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out',
+                        'slide-up': 'slideUp 0.8s ease-out',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Utilities */
+        .text-shadow {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .hero-gradient {
+            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.3), rgba(15, 23, 42, 1));
+        }
+        .clip-path-slant {
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+        }
+        
+        /* Hide scrollbar for clean UI */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #EA580C;
+        }
+
+        /* Mobile Menu Transition */
+        #mobile-menu {
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        #mobile-menu.active {
+            max-height: 400px;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-brand-dark text-slate-100 font-sans antialiased selection:bg-brand-orange selection:text-white">
+
+    <!-- NAVIGATION -->
+    <nav class="fixed w-full z-50 bg-brand-dark/95 backdrop-blur-md border-b border-slate-800 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 cursor-pointer" onclick="navigateTo('home')">
+                    <h1 class="font-display text-3xl tracking-wider text-white">INSPIRING <span class="text-brand-orange">FITNESS</span></h1>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#" onclick="navigateTo('home')" class="hover:text-brand-orange transition-colors px-3 py-2 rounded-md text-sm font-medium uppercase tracking-wide">Home</a>
+                        <a href="#" onclick="navigateTo('programs')" class="hover:text-brand-orange transition-colors px-3 py-2 rounded-md text-sm font-medium uppercase tracking-wide">Programs</a>
+                        <a href="#" onclick="navigateTo('pricing')" class="hover:text-brand-orange transition-colors px-3 py-2 rounded-md text-sm font-medium uppercase tracking-wide">Membership</a>
+                        <a href="#" onclick="navigateTo('trainers')" class="hover:text-brand-orange transition-colors px-3 py-2 rounded-md text-sm font-medium uppercase tracking-wide">Trainers</a>
+                        <a href="#" onclick="navigateTo('schedule')" class="hover:text-brand-orange transition-colors px-3 py-2 rounded-md text-sm font-medium uppercase tracking-wide">Schedule</a>
+                    </div>
+                </div>
+
+                <!-- CTA Button -->
+                <div class="hidden md:block">
+                    <button onclick="openModal()" class="bg-brand-orange hover:bg-orange-700 text-white px-6 py-2 rounded font-bold uppercase tracking-wider text-sm transition-all transform hover:scale-105 shadow-lg shadow-orange-900/50">
+                        Free Day Pass
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="-mr-2 flex md:hidden">
+                    <button onclick="toggleMobileMenu()" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden bg-brand-darker border-b border-slate-800">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#" onclick="navigateTo('home'); toggleMobileMenu()" class="text-slate-300 hover:text-brand-orange block px-3 py-2 rounded-md text-base font-medium">HOME</a>
+                <a href="#" onclick="navigateTo('programs'); toggleMobileMenu()" class="text-slate-300 hover:text-brand-orange block px-3 py-2 rounded-md text-base font-medium">PROGRAMS</a>
+                <a href="#" onclick="navigateTo('pricing'); toggleMobileMenu()" class="text-slate-300 hover:text-brand-orange block px-3 py-2 rounded-md text-base font-medium">PRICING</a>
+                <a href="#" onclick="navigateTo('trainers'); toggleMobileMenu()" class="text-slate-300 hover:text-brand-orange block px-3 py-2 rounded-md text-base font-medium">TRAINERS</a>
+                <a href="#" onclick="navigateTo('schedule'); toggleMobileMenu()" class="text-slate-300 hover:text-brand-orange block px-3 py-2 rounded-md text-base font-medium">SCHEDULE</a>
+                <button onclick="openModal(); toggleMobileMenu()" class="w-full text-left bg-brand-orange text-white block px-3 py-2 rounded-md text-base font-medium mt-4">GET FREE PASS</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main id="main-content" class="pt-20">
+        
+        <!-- ==================== HOME VIEW ==================== -->
+        <div id="view-home" class="page-view animate-fade-in">
+            <!-- Hero Section -->
+            <section class="relative h-[85vh] flex items-center justify-center overflow-hidden">
+                <!-- Background Image with Ken Burns Effect -->
+                <div class="absolute inset-0 z-0">
+                    <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop" alt="Gym Background" class="w-full h-full object-cover opacity-60 scale-100 animate-pulse-slow"> <!-- Placeholder for video -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/60 to-transparent"></div>
+                    <div class="absolute inset-0 bg-black/40"></div>
+                </div>
+
+                <div class="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+                    <h2 class="text-brand-orange font-bold tracking-[0.2em] uppercase mb-4 text-sm md:text-base animate-slide-up">Welcome to Inspiring Fitness</h2>
+                    <h1 class="text-5xl md:text-7xl lg:text-8xl font-display text-white mb-6 leading-tight text-shadow animate-slide-up" style="animation-delay: 0.1s;">
+                        STOP WISHING.<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-brand-red">START DOING.</span>
+                    </h1>
+                    <p class="mt-4 max-w-2xl mx-auto text-xl text-slate-300 mb-10 font-light animate-slide-up" style="animation-delay: 0.2s;">
+                        Expert coaches. World-class equipment. A community that pushes you forward. Transform in Hyderabad’s premium fitness destination.
+                    </p>
+                    <div class="flex flex-col sm:flex-row justify-center gap-4 animate-slide-up" style="animation-delay: 0.3s;">
+                        <button onclick="openModal()" class="bg-brand-orange hover:bg-orange-700 text-white px-8 py-4 rounded font-bold uppercase tracking-wider text-lg transition-all shadow-lg shadow-orange-900/50">
+                            Get Free Day Pass
+                        </button>
+                        <button onclick="navigateTo('pricing')" class="bg-transparent border-2 border-white hover:bg-white hover:text-brand-dark text-white px-8 py-4 rounded font-bold uppercase tracking-wider text-lg transition-all">
+                            View Plans
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Social Proof Strip -->
+            <div class="bg-slate-900 border-y border-slate-800 py-6">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap justify-center md:justify-between items-center gap-6 text-slate-400">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-star text-yellow-500"></i>
+                        <span class="font-bold text-white">4.8/5</span>
+                        <span class="text-sm">(127 Google Reviews)</span>
+                    </div>
+                    <div class="hidden md:flex gap-8 text-sm font-semibold tracking-wider uppercase">
+                        <span><i class="fa-solid fa-check text-brand-orange mr-2"></i>500+ Transformations</span>
+                        <span><i class="fa-solid fa-check text-brand-orange mr-2"></i>Certified Trainers</span>
+                        <span><i class="fa-solid fa-check text-brand-orange mr-2"></i>Premium Facility</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm">Trusted by pros from:</span>
+                        <i class="fa-brands fa-google text-lg hover:text-white transition"></i>
+                        <i class="fa-brands fa-amazon text-lg hover:text-white transition"></i>
+                        <i class="fa-brands fa-microsoft text-lg hover:text-white transition"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Why Us Section -->
+            <section class="py-20 bg-brand-dark">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-16">
+                        <h2 class="text-brand-orange font-bold tracking-widest uppercase mb-2">Why Choose Us</h2>
+                        <h3 class="text-4xl md:text-5xl font-display text-white">NOT YOUR AVERAGE GYM</h3>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <!-- Feature 1 -->
+                        <div class="bg-slate-800/50 p-8 rounded-2xl border border-slate-700 hover:border-brand-orange transition-all hover:-translate-y-2 group">
+                            <div class="w-14 h-14 bg-slate-700 rounded-full flex items-center justify-center mb-6 group-hover:bg-brand-orange transition-colors">
+                                <i class="fa-solid fa-dumbbell text-2xl text-white"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-white mb-3">Elite Coaching</h4>
+                            <p class="text-slate-400 leading-relaxed">Certified trainers who build programs around YOUR body type, not generic templates.</p>
+                        </div>
+                        
+                        <!-- Feature 2 -->
+                        <div class="bg-slate-800/50 p-8 rounded-2xl border border-slate-700 hover:border-brand-orange transition-all hover:-translate-y-2 group">
+                            <div class="w-14 h-14 bg-slate-700 rounded-full flex items-center justify-center mb-6 group-hover:bg-brand-orange transition-colors">
+                                <i class="fa-solid fa-gem text-2xl text-white"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-white mb-3">Premium Vibe</h4>
+                            <p class="text-slate-400 leading-relaxed">No overcrowding. No waiting for machines. Just pure focus in a luxury environment.</p>
+                        </div>
+
+                        <!-- Feature 3 -->
+                        <div class="bg-slate-800/50 p-8 rounded-2xl border border-slate-700 hover:border-brand-orange transition-all hover:-translate-y-2 group">
+                            <div class="w-14 h-14 bg-slate-700 rounded-full flex items-center justify-center mb-6 group-hover:bg-brand-orange transition-colors">
+                                <i class="fa-solid fa-chart-line text-2xl text-white"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-white mb-3">Proven Results</h4>
+                            <p class="text-slate-400 leading-relaxed">We track your progress weekly. If you don't change, we haven't done our job.</p>
+                        </div>
+
+                        <!-- Feature 4 -->
+                        <div class="bg-slate-800/50 p-8 rounded-2xl border border-slate-700 hover:border-brand-orange transition-all hover:-translate-y-2 group">
+                            <div class="w-14 h-14 bg-slate-700 rounded-full flex items-center justify-center mb-6 group-hover:bg-brand-orange transition-colors">
+                                <i class="fa-solid fa-heart-pulse text-2xl text-white"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-white mb-3">Holistic Approach</h4>
+                            <p class="text-slate-400 leading-relaxed">Strength, nutrition, and recovery—all under one roof for complete wellness.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Featured Transformations (Teaser) -->
+            <section class="py-20 bg-slate-900 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-1/3 h-full bg-brand-orange/5 skew-x-12 pointer-events-none"></div>
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                    <div class="flex flex-col md:flex-row justify-between items-end mb-12">
+                        <div>
+                            <h2 class="text-brand-orange font-bold tracking-widest uppercase mb-2">Success Stories</h2>
+                            <h3 class="text-4xl md:text-5xl font-display text-white">REAL PEOPLE. REAL RESULTS.</h3>
+                        </div>
+                        <button onclick="navigateTo('home'); document.getElementById('programs-section').scrollIntoView()" class="hidden md:inline-block text-white border-b-2 border-brand-orange pb-1 hover:text-brand-orange transition">View All Transformations <i class="fa-solid fa-arrow-right ml-2"></i></button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <!-- Transfo Card 1 -->
+                        <div class="bg-slate-800 rounded-xl overflow-hidden shadow-xl">
+                            <div class="h-64 relative">
+                                <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=2070&auto=format&fit=crop" alt="Before After" class="w-full h-full object-cover">
+                                <div class="absolute bottom-0 left-0 bg-brand-orange text-white text-xs font-bold px-3 py-1 uppercase">Lost 14 KG</div>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="text-lg font-bold text-white">Priya M.</h4>
+                                    <span class="text-slate-400 text-sm">4 Months</span>
+                                </div>
+                                <p class="text-slate-400 text-sm italic">"Coach Priya created a plan I could actually follow. I'm feeling more confident than ever!"</p>
+                            </div>
+                        </div>
+                         <!-- Transfo Card 2 -->
+                         <div class="bg-slate-800 rounded-xl overflow-hidden shadow-xl">
+                            <div class="h-64 relative">
+                                <img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=2070&auto=format&fit=crop" alt="Before After" class="w-full h-full object-cover">
+                                <div class="absolute bottom-0 left-0 bg-brand-orange text-white text-xs font-bold px-3 py-1 uppercase">Gained 8 KG Muscle</div>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="text-lg font-bold text-white">Rohan K.</h4>
+                                    <span class="text-slate-400 text-sm">5 Months</span>
+                                </div>
+                                <p class="text-slate-400 text-sm italic">"I was always the skinny guy. The muscle building program changed my life."</p>
+                            </div>
+                        </div>
+                         <!-- Transfo Card 3 -->
+                         <div class="bg-slate-800 rounded-xl overflow-hidden shadow-xl">
+                            <div class="h-64 relative">
+                                <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=2070&auto=format&fit=crop" alt="Before After" class="w-full h-full object-cover">
+                                <div class="absolute bottom-0 left-0 bg-brand-orange text-white text-xs font-bold px-3 py-1 uppercase">Reversed Diabetes</div>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="text-lg font-bold text-white">Karthik R.</h4>
+                                    <span class="text-slate-400 text-sm">6 Months</span>
+                                </div>
+                                <p class="text-slate-400 text-sm italic">"Lost 22kg and reversed pre-diabetes. I run 5ks now!"</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 text-center md:hidden">
+                        <button onclick="navigateTo('home')" class="text-white border-b-2 border-brand-orange pb-1 hover:text-brand-orange transition">View All Transformations</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Strip -->
+            <section class="py-24 bg-gradient-to-r from-brand-orange to-red-600 text-white text-center">
+                <div class="max-w-4xl mx-auto px-4">
+                    <h2 class="text-4xl md:text-6xl font-display mb-6">READY TO TRANSFORM?</h2>
+                    <p class="text-xl mb-10 opacity-90">Don't wait for Monday. Your future self is begging you to start today.</p>
+                    <div class="flex flex-col sm:flex-row justify-center gap-4">
+                        <button onclick="openModal()" class="bg-white text-brand-red hover:bg-slate-100 px-8 py-4 rounded font-bold uppercase tracking-wider text-lg transition-all shadow-xl">
+                            Claim Free Pass
+                        </button>
+                        <button onclick="navigateTo('schedule')" class="bg-transparent border-2 border-white hover:bg-black/10 text-white px-8 py-4 rounded font-bold uppercase tracking-wider text-lg transition-all">
+                            View Schedule
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ==================== PROGRAMS VIEW ==================== -->
+        <div id="view-programs" class="page-view hidden animate-fade-in py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-brand-orange font-bold tracking-widest uppercase mb-2">Our Expertise</h2>
+                    <h3 class="text-4xl md:text-5xl font-display text-white">PROGRAMS THAT DELIVER</h3>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Program 1 -->
+                    <div class="bg-slate-800 rounded-2xl overflow-hidden group hover:shadow-2xl hover:shadow-orange-900/20 transition-all duration-300">
+                        <div class="h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Weight Loss">
+                        </div>
+                        <div class="p-8">
+                            <h3 class="text-2xl font-display text-white mb-2">Weight Loss Accelerator</h3>
+                            <p class="text-brand-orange text-sm font-bold uppercase mb-4">Burn Fat. Keep Muscle.</p>
+                            <p class="text-slate-400 mb-6 text-sm leading-relaxed">High-intensity program combining cardio conditioning with resistance training to rev up metabolism.</p>
+                            <ul class="text-slate-300 text-sm space-y-2 mb-6">
+                                <li><i class="fa-solid fa-check text-brand-orange mr-2"></i>Diet Chart Included</li>
+                                <li><i class="fa-solid fa-check text-brand-orange mr-2"></i>5 Sessions/Week</li>
+                            </ul>
+                            <button onclick="openModal()" class="w-full border border-brand-orange text-brand-orange hover:bg-brand-orange hover:text-white py-3 rounded font-bold uppercase text-sm transition-colors">Start Now</button>
+                        </div>
+                    </div>
+
+                    <!-- Program 2 -->
+                    <div class="bg-slate-800 rounded-2xl overflow-hidden group hover:shadow-2xl hover:shadow-orange-900/20 transition-all duration-300">
+                        <div class="h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Muscle Gain">
+                        </div>
+                        <div class="p-8">
+                            <h3 class="text-2xl font-display text-white mb-2">Muscle Hypertrophy</h3>
+                            <p class="text-brand-orange text-sm font-bold uppercase mb-4">Build Size. Gain Strength.</p>
+                            <p class="text-slate-400 mb-6 text-sm leading-relaxed">Old school bodybuilding meets modern science. Progressive overload to sculpt your physique.</p>
+                            <ul class="text-slate-300 text-sm space-y-2 mb-6">
+                                <li><i class="fa-solid fa-check text-brand-orange mr-2"></i>Supplement Guidance</li>
+                                <li><i class="fa-solid fa-check text-brand-orange mr-2"></i>Form Correction</li>
+                            </ul>
+                            <button onclick="openModal()" class="w-full border border-brand-orange text-brand-orange hover:bg-brand-orange hover:text-white py-3 rounded font-bold uppercase text-sm transition-colors">Start Now</button>
+                        </div>
+                    </div>
+
+                    <!-- Program 3 -->
+                    <div class="bg-slate-800 rounded-2xl overflow-hidden group hover:shadow-2xl hover:shadow-orange-900/20 transition-all duration-300">
+                        <div class="h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1605296867304-46d5465a13f1?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Women Fitness">
+                        </div>
+                        <div class="p-8">
+                            <h3 class="text-2xl font-display text-white mb-2">Women's Fitness Zone</h3>
+                            <p class="text-brand-orange text-sm font-bold uppercase mb-4">Strong is Beautiful.</p>
+                            <p class="text-slate-400 mb-6 text-sm leading-relaxed">A supportive environment focused on toning, glutes, and core strength. Train with confidence.</p>
+                            <ul class="text-slate-300 text-sm space-y-2 mb-6">
+                                <li><i class="fa-solid fa-check text-brand-orange mr-2"></i>PCOS Friendly</li>
+                                <li><i class="fa-solid fa-check text-brand-orange mr-2"></i>Separate Section</li>
+                            </ul>
+                            <button onclick="openModal()" class="w-full border border-brand-orange text-brand-orange hover:bg-brand-orange hover:text-white py-3 rounded font-bold uppercase text-sm transition-colors">Start Now</button>
+                        </div>
+                    </div>
+
+                    <!-- Program 4 -->
+                    <div class="bg-slate-800 rounded-2xl overflow-hidden group hover:shadow-2xl hover:shadow-orange-900/20 transition-all duration-300">
+                        <div class="h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?q=80&w=2069&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="HIIT">
+                        </div>
+                        <div class="p-8">
+                            <h3 class="text-2xl font-display text-white mb-2">Functional & HIIT</h3>
+                            <p class="text-brand-orange text-sm font-bold uppercase mb-4">Move Better. Live Better.</p>
+                            <p class="text-slate-400 mb-6 text-sm leading-relaxed">Explosive movements, kettlebells, and battle ropes to improve stamina and agility.</p>
+                            <ul class="text-slate-300 text-sm space-y-2 mb-6">
+                                <li><i class="fa-solid fa-check text-brand-orange mr-2"></i>Group Energy</li>
+                                <li><i class="fa-solid fa-check text-brand-orange mr-2"></i>High Calorie Burn</li>
+                            </ul>
+                            <button onclick="openModal()" class="w-full border border-brand-orange text-brand-orange hover:bg-brand-orange hover:text-white py-3 rounded font-bold uppercase text-sm transition-colors">Start Now</button>
+                        </div>
+                    </div>
+
+                    <!-- Program 5 -->
+                    <div class="bg-slate-800 rounded-2xl overflow-hidden group hover:shadow-2xl hover:shadow-orange-900/20 transition-all duration-300">
+                        <div class="h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1540496987140-afb18252d99e?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Personal Training">
+                        </div>
+                        <div class="p-8">
+                            <h3 class="text-2xl font-display text-white mb-2">1-on-1 Personal Training</h3>
+                            <p class="text-brand-orange text-sm font-bold uppercase mb-4">Your Goals. Our Obsession.</p>
+                            <p class="text-slate-400 mb-6 text-sm leading-relaxed">The fastest way to results. A dedicated coach creates a roadmap specifically for you.</p>
+                            <ul class="text-slate-300 text-sm space-y-2 mb-6">
+                                <li><i class="fa-solid fa-check text-brand-orange mr-2"></i>100% Attention</li>
+                                <li><i class="fa-solid fa-check text-brand-orange mr-2"></i>WhatsApp Support</li>
+                            </ul>
+                            <button onclick="openModal()" class="w-full border border-brand-orange text-brand-orange hover:bg-brand-orange hover:text-white py-3 rounded font-bold uppercase text-sm transition-colors">Start Now</button>
+                        </div>
+                    </div>
+
+                    <!-- Program 6 -->
+                    <div class="bg-slate-800 rounded-2xl overflow-hidden group hover:shadow-2xl hover:shadow-orange-900/20 transition-all duration-300">
+                        <div class="h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1552662977-0749e7b2434e?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Corporate">
+                        </div>
+                        <div class="p-8">
+                            <h3 class="text-2xl font-display text-white mb-2">Corporate Wellness</h3>
+                            <p class="text-brand-orange text-sm font-bold uppercase mb-4">Fit Teams Win.</p>
+                            <p class="text-slate-400 mb-6 text-sm leading-relaxed">Customized packages for offices and teams to reduce stress and boost productivity.</p>
+                            <ul class="text-slate-300 text-sm space-y-2 mb-6">
+                                <li><i class="fa-solid fa-check text-brand-orange mr-2"></i>Group Activities</li>
+                                <li><i class="fa-solid fa-check text-brand-orange mr-2"></i>Health Talks</li>
+                            </ul>
+                            <button onclick="openModal()" class="w-full border border-brand-orange text-brand-orange hover:bg-brand-orange hover:text-white py-3 rounded font-bold uppercase text-sm transition-colors">Start Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== PRICING VIEW ==================== -->
+        <div id="view-pricing" class="page-view hidden animate-fade-in py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-brand-orange font-bold tracking-widest uppercase mb-2">Membership Plans</h2>
+                    <h3 class="text-4xl md:text-5xl font-display text-white">INVEST IN YOURSELF</h3>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Starter Plan -->
+                    <div class="bg-slate-800 p-8 rounded-2xl border border-slate-700 flex flex-col">
+                        <h3 class="text-xl font-bold text-white mb-2">THE STARTER</h3>
+                        <p class="text-slate-400 text-sm mb-6">Trial / Travelers</p>
+                        <div class="mb-6">
+                            <span class="text-3xl font-display text-white">₹2,499</span>
+                            <span class="text-slate-400">/mo</span>
+                        </div>
+                        <ul class="text-slate-300 text-sm space-y-4 mb-8 flex-grow">
+                            <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i>Unlimited Access</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i>Free WiFi & Lockers</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i>Floor Assistance</li>
+                        </ul>
+                        <button onclick="openModal()" class="w-full bg-slate-700 hover:bg-slate-600 text-white py-3 rounded font-bold uppercase text-sm transition-colors">Join Now</button>
+                    </div>
+
+                    <!-- Committed Plan -->
+                    <div class="bg-slate-800 p-8 rounded-2xl border border-slate-700 flex flex-col">
+                        <h3 class="text-xl font-bold text-white mb-2">THE COMMITTED</h3>
+                        <p class="text-slate-400 text-sm mb-6">3 Months (Beginners)</p>
+                        <div class="mb-6">
+                            <span class="text-3xl font-display text-white">₹6,999</span>
+                            <span class="text-brand-orange text-xs font-bold block mt-1">SAVE ₹500</span>
+                        </div>
+                        <ul class="text-slate-300 text-sm space-y-4 mb-8 flex-grow">
+                            <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i>All Starter Benefits</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i>2 PT Sessions</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i>Diet Consultation</li>
+                        </ul>
+                        <button onclick="openModal()" class="w-full bg-slate-700 hover:bg-slate-600 text-white py-3 rounded font-bold uppercase text-sm transition-colors">Join Now</button>
+                    </div>
+
+                    <!-- Transformer Plan (Featured) -->
+                    <div class="bg-slate-800 p-8 rounded-2xl border-2 border-brand-orange relative transform md:-translate-y-4 shadow-2xl shadow-orange-900/20 flex flex-col">
+                        <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-brand-orange text-white px-4 py-1 rounded-full text-xs font-bold uppercase">Most Popular</div>
+                        <h3 class="text-xl font-bold text-white mb-2">THE TRANSFORMER</h3>
+                        <p class="text-slate-400 text-sm mb-6">6 Months (Results)</p>
+                        <div class="mb-6">
+                            <span class="text-4xl font-display text-brand-orange">₹12,999</span>
+                            <span class="text-slate-300 text-xs font-bold block mt-1">SAVE ₹2,000</span>
+                        </div>
+                        <ul class="text-white text-sm space-y-4 mb-8 flex-grow">
+                            <li class="flex items-center"><i class="fa-solid fa-check text-brand-orange mr-2"></i>Priority Support</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-brand-orange mr-2"></i>Weekly Body Analysis</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-brand-orange mr-2"></i>Steam Room Access</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-brand-orange mr-2"></i>Freeze Option (15 Days)</li>
+                        </ul>
+                        <button onclick="openModal()" class="w-full bg-gradient-to-r from-brand-orange to-red-600 hover:to-red-700 text-white py-3 rounded font-bold uppercase text-sm transition-all shadow-lg">Join Now</button>
+                    </div>
+
+                    <!-- Elite Plan -->
+                    <div class="bg-slate-800 p-8 rounded-2xl border border-slate-700 flex flex-col">
+                        <h3 class="text-xl font-bold text-white mb-2">THE ELITE</h3>
+                        <p class="text-slate-400 text-sm mb-6">1 Year (Lifestyle)</p>
+                        <div class="mb-6">
+                            <span class="text-3xl font-display text-white">₹23,999</span>
+                            <span class="text-brand-orange text-xs font-bold block mt-1">BEST VALUE (₹1999/mo)</span>
+                        </div>
+                        <ul class="text-slate-300 text-sm space-y-4 mb-8 flex-grow">
+                            <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i>VIP Access</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i>Freeze Option (30 Days)</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i>2 Guest Passes/mo</li>
+                        </ul>
+                        <button onclick="openModal()" class="w-full bg-slate-700 hover:bg-slate-600 text-white py-3 rounded font-bold uppercase text-sm transition-colors">Join Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== TRAINERS VIEW ==================== -->
+        <div id="view-trainers" class="page-view hidden animate-fade-in py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-brand-orange font-bold tracking-widest uppercase mb-2">The Squad</h2>
+                    <h3 class="text-4xl md:text-5xl font-display text-white">MEET YOUR COACHES</h3>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Trainer 1 -->
+                    <div class="bg-slate-800 rounded-xl overflow-hidden group">
+                        <div class="h-80 overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1567013127542-490d757e51fc?q=80&w=1974&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 top" alt="Rahul">
+                            <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent p-6">
+                                <h3 class="text-2xl font-display text-white">Rahul "The Tank"</h3>
+                                <p class="text-brand-orange font-bold text-sm">Head Trainer</p>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-slate-400 text-sm italic mb-4">"Discipline is the bridge between goals and accomplishment."</p>
+                            <p class="text-slate-300 text-sm">Specializes in heavy lifting and hypertrophy with 8 years of experience.</p>
+                        </div>
+                    </div>
+                     <!-- Trainer 2 -->
+                     <div class="bg-slate-800 rounded-xl overflow-hidden group">
+                        <div class="h-80 overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1594381898411-846e7d193883?q=80&w=1974&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 top" alt="Priya">
+                            <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent p-6">
+                                <h3 class="text-2xl font-display text-white">Priya Sharma</h3>
+                                <p class="text-brand-orange font-bold text-sm">Functional & HIIT</p>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-slate-400 text-sm italic mb-4">"Train hard, eat smart, live better."</p>
+                            <p class="text-slate-300 text-sm">Certified nutritionist and CrossFit L1 trainer helping you burn fat effectively.</p>
+                        </div>
+                    </div>
+                     <!-- Trainer 3 -->
+                     <div class="bg-slate-800 rounded-xl overflow-hidden group">
+                        <div class="h-80 overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1583468982228-19f19164aee2?q=80&w=1974&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 top" alt="Vikram">
+                            <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent p-6">
+                                <h3 class="text-2xl font-display text-white">Vikram Singh</h3>
+                                <p class="text-brand-orange font-bold text-sm">Athletic Coach</p>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-slate-400 text-sm italic mb-4">"You don't have to be an athlete to train like one."</p>
+                            <p class="text-slate-300 text-sm">Former state-level athlete focused on speed, agility, and performance.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== SCHEDULE VIEW ==================== -->
+        <div id="view-schedule" class="page-view hidden animate-fade-in py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-brand-orange font-bold tracking-widest uppercase mb-2">Class Timetable</h2>
+                    <h3 class="text-4xl md:text-5xl font-display text-white">PLAN YOUR WEEK</h3>
+                </div>
+
+                <div class="overflow-x-auto bg-slate-800 rounded-xl border border-slate-700 shadow-xl">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-brand-orange text-white">
+                                <th class="p-4 border-b border-orange-700 font-display text-xl tracking-wide">Time</th>
+                                <th class="p-4 border-b border-orange-700 font-display text-xl tracking-wide">Mon</th>
+                                <th class="p-4 border-b border-orange-700 font-display text-xl tracking-wide">Tue</th>
+                                <th class="p-4 border-b border-orange-700 font-display text-xl tracking-wide">Wed</th>
+                                <th class="p-4 border-b border-orange-700 font-display text-xl tracking-wide">Thu</th>
+                                <th class="p-4 border-b border-orange-700 font-display text-xl tracking-wide">Fri</th>
+                                <th class="p-4 border-b border-orange-700 font-display text-xl tracking-wide">Sat</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-300 text-sm">
+                            <tr class="border-b border-slate-700 hover:bg-slate-700/50 transition">
+                                <td class="p-4 font-bold text-white bg-slate-900/50">6:00 AM</td>
+                                <td class="p-4">HIIT Blast</td>
+                                <td class="p-4">Yoga Flow</td>
+                                <td class="p-4">HIIT Blast</td>
+                                <td class="p-4">Yoga Flow</td>
+                                <td class="p-4">HIIT Blast</td>
+                                <td class="p-4">Cross-Train</td>
+                            </tr>
+                            <tr class="border-b border-slate-700 hover:bg-slate-700/50 transition">
+                                <td class="p-4 font-bold text-white bg-slate-900/50">7:00 AM</td>
+                                <td class="p-4">Strength</td>
+                                <td class="p-4">Cardio</td>
+                                <td class="p-4">Strength</td>
+                                <td class="p-4">Cardio</td>
+                                <td class="p-4">Strength</td>
+                                <td class="p-4">Abs & Core</td>
+                            </tr>
+                            <tr class="border-b border-slate-700 hover:bg-slate-700/50 transition">
+                                <td class="p-4 font-bold text-white bg-slate-900/50">6:00 PM</td>
+                                <td class="p-4">Zumba</td>
+                                <td class="p-4">BodyPump</td>
+                                <td class="p-4">Zumba</td>
+                                <td class="p-4">BodyPump</td>
+                                <td class="p-4">Bollywood Fit</td>
+                                <td class="p-4">Kickboxing</td>
+                            </tr>
+                            <tr class="hover:bg-slate-700/50 transition">
+                                <td class="p-4 font-bold text-white bg-slate-900/50">7:00 PM</td>
+                                <td class="p-4">Abs & Glutes</td>
+                                <td class="p-4">Yoga</td>
+                                <td class="p-4">Abs & Glutes</td>
+                                <td class="p-4">Yoga</td>
+                                <td class="p-4">Mobility</td>
+                                <td class="p-4">Open Gym</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER & FAQ (Visible on all pages) -->
+    <footer class="bg-slate-950 border-t border-slate-900 pt-16 pb-8 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- FAQ Section -->
+            <div class="mb-16 border-b border-slate-900 pb-12">
+                <h3 class="text-3xl font-display text-white mb-8 text-center">Frequently Asked Questions</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-slate-900 p-6 rounded-lg">
+                        <h4 class="font-bold text-white mb-2">I've never been to a gym. Is this for me?</h4>
+                        <p class="text-slate-400 text-sm">Absolutely. 40% of our members started as beginners. Our floor trainers will guide you on how to use every machine safely.</p>
+                    </div>
+                    <div class="bg-slate-900 p-6 rounded-lg">
+                        <h4 class="font-bold text-white mb-2">Do you offer a trial?</h4>
+                        <p class="text-slate-400 text-sm">Yes! We offer a Free 1-Day Pass so you can check out the vibe before you join.</p>
+                    </div>
+                    <div class="bg-slate-900 p-6 rounded-lg">
+                        <h4 class="font-bold text-white mb-2">What are the peak hours?</h4>
+                        <p class="text-slate-400 text-sm">Usually 6 AM - 8 AM and 6 PM - 8 PM. If you prefer a quieter workout, 11 AM - 4 PM is ideal.</p>
+                    </div>
+                    <div class="bg-slate-900 p-6 rounded-lg">
+                        <h4 class="font-bold text-white mb-2">Are there hidden fees?</h4>
+                        <p class="text-slate-400 text-sm">None. The price you see is the price you pay. Personal Training is an optional add-on.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+                <!-- Brand Info -->
+                <div class="col-span-1 md:col-span-2">
+                    <h2 class="font-display text-3xl tracking-wider text-white mb-4">INSPIRING <span class="text-brand-orange">FITNESS</span></h2>
+                    <p class="text-slate-400 mb-6">Transform Your Body. Elevate Your Life. We provide the ultimate training environment where elite coaching meets premium facilities.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-brand-orange hover:text-white transition"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-brand-orange hover:text-white transition"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-brand-orange hover:text-white transition"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h4 class="font-bold text-white uppercase tracking-wider mb-6">Contact</h4>
+                    <ul class="space-y-4 text-slate-400 text-sm">
+                        <li class="flex items-start"><i class="fa-solid fa-location-dot mt-1 mr-3 text-brand-orange"></i> Hyderabad, Telangana</li>
+                        <li class="flex items-center"><i class="fa-solid fa-phone mr-3 text-brand-orange"></i> +91 9390906318</li>
+                        <li class="flex items-center"><i class="fa-solid fa-envelope mr-3 text-brand-orange"></i> aman.kalpra.11@gmail.com</li>
+                    </ul>
+                </div>
+
+                <!-- Hours -->
+                <div>
+                    <h4 class="font-bold text-white uppercase tracking-wider mb-6">Opening Hours</h4>
+                    <ul class="space-y-2 text-slate-400 text-sm">
+                        <li class="flex justify-between"><span>Mon - Sat:</span> <span class="text-white">5:00 AM - 11:00 PM</span></li>
+                        <li class="flex justify-between"><span>Sunday:</span> <span class="text-white">6:00 AM - 9:00 PM</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-900 mt-12 pt-8 text-center text-slate-500 text-sm">
+                <p>&copy; 2024 Inspiring Fitness. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WHATSAPP FLOAT -->
+    <a href="https://wa.me/919390906318?text=Hi%20Inspiring%20Fitness,%20I'd%20like%20to%20know%20more!" target="_blank" class="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center text-3xl transition-transform hover:scale-110 z-40 animate-pulse-slow">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- MODAL: DAY PASS FORM -->
+    <div id="dayPassModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <!-- Backdrop -->
+        <div class="fixed inset-0 bg-black bg-opacity-80 transition-opacity backdrop-blur-sm" onclick="closeModal()"></div>
+
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+            <div class="inline-block align-bottom bg-slate-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full border border-slate-700">
+                <div class="bg-slate-900 px-4 pt-5 pb-4 sm:p-6 sm:pb-4 relative">
+                    <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                    
+                    <div class="sm:flex sm:items-start">
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                            <h3 class="text-2xl leading-6 font-display text-white mb-2" id="modal-title">CLAIM FREE DAY PASS</h3>
+                            <p class="text-sm text-slate-400 mb-6">Experience premium fitness. No commitment required. Limited slots available.</p>
+                            
+                            <form class="space-y-4" onsubmit="event.preventDefault(); alert('Request sent! We will contact you shortly.'); closeModal();">
+                                <div>
+                                    <label class="block text-slate-300 text-xs font-bold uppercase mb-2">Name</label>
+                                    <input type="text" class="w-full bg-slate-800 border border-slate-700 rounded p-3 text-white focus:outline-none focus:border-brand-orange" placeholder="John Doe" required>
+                                </div>
+                                <div>
+                                    <label class="block text-slate-300 text-xs font-bold uppercase mb-2">Phone Number</label>
+                                    <input type="tel" class="w-full bg-slate-800 border border-slate-700 rounded p-3 text-white focus:outline-none focus:border-brand-orange" placeholder="+91 99999 99999" required>
+                                </div>
+                                <div>
+                                    <label class="block text-slate-300 text-xs font-bold uppercase mb-2">Goal</label>
+                                    <select class="w-full bg-slate-800 border border-slate-700 rounded p-3 text-white focus:outline-none focus:border-brand-orange">
+                                        <option>Weight Loss</option>
+                                        <option>Muscle Gain</option>
+                                        <option>General Fitness</option>
+                                        <option>CrossFit/HIIT</option>
+                                    </select>
+                                </div>
+                                <div class="flex items-center mt-4">
+                                    <input type="checkbox" class="form-checkbox h-4 w-4 text-brand-orange bg-slate-800 border-slate-600 rounded focus:ring-brand-orange" checked>
+                                    <span class="ml-2 text-xs text-slate-400">Send me details on WhatsApp</span>
+                                </div>
+                                <button type="submit" class="w-full bg-brand-orange hover:bg-orange-700 text-white font-bold py-3 px-4 rounded mt-6 uppercase tracking-wider transition-colors">
+                                    Book My Spot
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- Navigation Logic ---
+        function navigateTo(viewId) {
+            // 1. Update Navigation Styles
+            const links = document.querySelectorAll('nav a');
+            links.forEach(link => link.classList.remove('text-brand-orange'));
+            
+            // 2. Hide all views
+            document.querySelectorAll('.page-view').forEach(view => {
+                view.classList.add('hidden');
+            });
+
+            // 3. Show selected view
+            const selectedView = document.getElementById(`view-${viewId}`);
+            if (selectedView) {
+                selectedView.classList.remove('hidden');
+                // Scroll to top
+                window.scrollTo(0, 0);
+            } else {
+                // If view ID doesn't exist (e.g. from footer link), default to home
+                 document.getElementById('view-home').classList.remove('hidden');
+            }
+        }
+
+        // --- Mobile Menu ---
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('active');
+        }
+
+        // --- Modal Logic ---
+        function openModal() {
+            document.getElementById('dayPassModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        }
+
+        function closeModal() {
+            document.getElementById('dayPassModal').classList.add('hidden');
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        }
+
+        // --- Navbar Scroll Effect ---
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-lg');
+                navbar.classList.replace('bg-brand-dark/95', 'bg-brand-dark/100');
+            } else {
+                navbar.classList.remove('shadow-lg');
+                navbar.classList.replace('bg-brand-dark/100', 'bg-brand-dark/95');
+            }
+        });
+
+        // Initialize Home View
+        navigateTo('home');
+    </script>
+</body>
+</html>
